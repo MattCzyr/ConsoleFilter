@@ -4,7 +4,6 @@ import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import com.chaosthedude.consolefilter.ConsoleFilter;
 import com.chaosthedude.consolefilter.config.ConfigHandler;
 
 public class JavaFilter implements Filter {

@@ -8,7 +8,6 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
 
-import com.chaosthedude.consolefilter.ConsoleFilter;
 import com.chaosthedude.consolefilter.config.ConfigHandler;
 
 public class Log4jFilter implements Filter {

@@ -11,8 +11,9 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.10.2-1.0.0"
-group= "com.chaosthedude.consolefilter"
+
+version = "1.11-1.0.0"
+group = "com.chaosthedude.consolefilter"
 archivesBaseName = "ConsoleFilter"
 
 sourceCompatibility = targetCompatibility = "1.6"
@@ -21,9 +22,9 @@ compileJava {
 }
 
 minecraft {
-    version = "1.10.2-12.18.2.2097"
+    version = "1.11-13.19.0.2153"
     runDir = "run"
-    mappings = "snapshot_20160518"
+    mappings = "snapshot_20161111"
 }
 
 dependencies {
