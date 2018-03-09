@@ -23,27 +23,108 @@ public class Log4jFilter implements Filter {
 	}
 
 	@Override
-	public Filter.Result filter(Logger logger, Level level, Marker marker, String s, Object... args) {
+	public State getState() {
 		return null;
 	}
 
 	@Override
-	public Filter.Result filter(Logger logger, Level level, Marker marker, Object object, Throwable t) {
+	public void initialize() {}
+
+	@Override
+	public void start() {}
+
+	@Override
+	public void stop() {}
+
+	@Override
+	public boolean isStarted() {
+		return false;
+	}
+
+	@Override
+	public boolean isStopped() {
+		return false;
+	}
+
+	@Override
+	public Result getOnMismatch() {
 		return null;
 	}
 
 	@Override
-	public Filter.Result filter(Logger logger, Level level, Marker marker, Message message, Throwable t) {
+	public Result getOnMatch() {
 		return null;
 	}
 
 	@Override
-	public Filter.Result getOnMatch() {
+	public Result filter(Logger logger, Level level, Marker marker, String msg, Object... params) {
 		return null;
 	}
 
 	@Override
-	public Filter.Result getOnMismatch() {
+	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0) {
+		return null;
+	}
+
+	@Override
+	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1) {
+		return null;
+	}
+
+	@Override
+	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2) {
+		return null;
+	}
+
+	@Override
+	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
+			Object p3) {
+		return null;
+	}
+
+	@Override
+	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
+			Object p3, Object p4) {
+		return null;
+	}
+
+	@Override
+	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
+			Object p3, Object p4, Object p5) {
+		return null;
+	}
+
+	@Override
+	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
+			Object p3, Object p4, Object p5, Object p6) {
+		return null;
+	}
+
+	@Override
+	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
+			Object p3, Object p4, Object p5, Object p6, Object p7) {
+		return null;
+	}
+
+	@Override
+	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
+			Object p3, Object p4, Object p5, Object p6, Object p7, Object p8) {
+		return null;
+	}
+
+	@Override
+	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
+			Object p3, Object p4, Object p5, Object p6, Object p7, Object p8, Object p9) {
+		return null;
+	}
+
+	@Override
+	public Result filter(Logger logger, Level level, Marker marker, Object msg, Throwable t) {
+		return null;
+	}
+
+	@Override
+	public Result filter(Logger logger, Level level, Marker marker, Message msg, Throwable t) {
 		return null;
 	}
 
