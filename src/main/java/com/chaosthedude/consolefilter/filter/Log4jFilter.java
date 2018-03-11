@@ -15,7 +15,8 @@ public class Log4jFilter implements Filter {
 	@Override
 	public Filter.Result filter(LogEvent event) {
 		for (String s : ConfigHandler.getMessagesToFilter()) {
-			if (event.getMessage().toString().contains(s)) {
+			Message m = event.getMessage();
+			if (m.toString().contains(s) || m.getFormattedMessage().contains(s)) {
 				return Filter.Result.DENY;
 			}
 		}
