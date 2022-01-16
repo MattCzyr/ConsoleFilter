@@ -2,9 +2,8 @@ package com.chaosthedude.consolefilter.filter;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.logging.LogRecord;
 
-import com.chaosthedude.consolefilter.config.ConfigHandler;
+import com.chaosthedude.consolefilter.ConsoleFilterConfig;
 
 public class SystemFilter extends PrintStream {
 	
@@ -20,7 +19,7 @@ public class SystemFilter extends PrintStream {
 	}
 	
 	private boolean shouldFilter(String s) {
-		for (String filter : ConfigHandler.getMessagesToFilter()) {
+		for (String filter : ConsoleFilterConfig.filters.get()) {
 			if (s.contains(filter)) {
 				return true;
 			}
