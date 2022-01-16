@@ -1,0 +1,11 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="CC BY-NC-SA 4.0"
+issueTrackerURL="https://github.com/MattCzyr/ConsoleFilter/issues"
+
+[[mods]]
+modId="consolefilter"
+version="${file.jarVersion}"
+displayName="ConsoleFilter"
+authors="ChaosTheDude"
+description="Keeps your console looking fresh."
