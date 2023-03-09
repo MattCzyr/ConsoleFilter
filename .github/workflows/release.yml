@@ -20,13 +20,15 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: |
+        ./gradlew build
+        mv build/libs/ConsoleFilter-*.jar ./
     - uses: actions/upload-artifact@v3
       with:
         name: consolefilter-mod
         path: build/libs
     - uses: ncipollo/release-action@v1
       with:
-        artifacts: "build/libs/*.jar"
+        artifacts: "ConsoleFilter-*.jar"
         name: Release ${{ env.RELEASE_VERSION }}
         token: ${{ secrets.GITHUB_TOKEN }}
