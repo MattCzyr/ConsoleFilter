@@ -8,17 +8,27 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
 
-import com.chaosthedude.consolefilter.config.ConfigHandler;
+import com.chaosthedude.consolefilter.ConsoleFilter;
+import com.chaosthedude.consolefilter.ConsoleFilterConfig;
 
-public class Log4jFilter implements Filter {
+public class Log4jFilter implements CustomFilter, Filter {
+
+	private final ConsoleFilterConfig config;
+
+	public Log4jFilter(ConsoleFilter mod) {
+		this.config = mod.getConfig();
+	}
+
+	@Override
+	public void applyFilter(ConsoleFilter mod) {
+		((Logger) LogManager.getRootLogger()).addFilter(this);
+	}
 
 	@Override
 	public Filter.Result filter(LogEvent event) {
-		for (String s : ConfigHandler.getMessagesToFilter()) {
-			Message m = event.getMessage();
-			if (m.toString().contains(s) || m.getFormattedMessage().contains(s)) {
-				return Filter.Result.DENY;
-			}
+		Message message = event.getMessage();
+		if (this.config.shouldFilter(message.toString()) || this.config.shouldFilter(message.getFormattedMessage())) {
+			return Filter.Result.DENY;
 		}
 		return null;
 	}
@@ -29,13 +39,16 @@ public class Log4jFilter implements Filter {
 	}
 
 	@Override
-	public void initialize() {}
+	public void initialize() {
+	}
 
 	@Override
-	public void start() {}
+	public void start() {
+	}
 
 	@Override
-	public void stop() {}
+	public void stop() {
+	}
 
 	@Override
 	public boolean isStarted() {
@@ -128,9 +141,4 @@ public class Log4jFilter implements Filter {
 	public Result filter(Logger logger, Level level, Marker marker, Message msg, Throwable t) {
 		return null;
 	}
-
-	public static void applyFilter() {
-		((Logger) LogManager.getRootLogger()).addFilter(new Log4jFilter());
-	}
-
 }

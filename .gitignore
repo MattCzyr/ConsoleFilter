@@ -10,6 +10,9 @@ ehthumbs.db
 # ForgeGradle
 /run
 
+# Forge
+/mcmodsrepo
+
 # Eclipse
 /.settings
 /.metadata

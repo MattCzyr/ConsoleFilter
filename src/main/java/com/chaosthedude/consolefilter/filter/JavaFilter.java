@@ -4,22 +4,24 @@ import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import com.chaosthedude.consolefilter.config.ConfigHandler;
+import com.chaosthedude.consolefilter.ConsoleFilter;
+import com.chaosthedude.consolefilter.ConsoleFilterConfig;
 
-public class JavaFilter implements Filter {
+public class JavaFilter implements CustomFilter, Filter {
+
+	private final ConsoleFilterConfig config;
+
+	public JavaFilter(ConsoleFilter mod) {
+		this.config = mod.getConfig();
+	}
+
+	@Override
+	public void applyFilter(ConsoleFilter mod) {
+		Logger.getLogger("").setFilter(this);
+	}
 
 	@Override
 	public boolean isLoggable(LogRecord record) {
-		for (String s : ConfigHandler.getMessagesToFilter()) {
-			if (record.getMessage().contains(s)) {
-				return false;
-			}
-		}
-		return true;
+		return !this.config.shouldFilter(record.getMessage());
 	}
-
-	public static void applyFilter() {
-		Logger.getLogger("").setFilter(new JavaFilter());
-	}
-
 }
