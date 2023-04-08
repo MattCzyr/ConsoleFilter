@@ -8,38 +8,42 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ConsoleFilterConfig {
 
-	private static final String REGEX_PATTERN = "regex:";
-
-	private ForgeConfigSpec.ConfigValue<List<? extends String>> filter;
+	private ForgeConfigSpec.ConfigValue<List<? extends String>> basicFilters;
+	private ForgeConfigSpec.ConfigValue<List<? extends String>> regexFilters;
 	private ForgeConfigSpec spec;
 
 	private List<FilterEntry> filterList = new ArrayList<>();
 
-	void initialize() {
+	public void init() {
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 
 		builder.push("general");
-		this.filter = builder
-				.comment(" Any console messages containing one of these strings will be hidden.")
-				.defineList("filters", Collections.emptyList(), obj -> true);
+
+		basicFilters = builder
+				.comment("Any console messages containing any of these strings will be hidden.")
+				.defineList("basicFilters", Collections.emptyList(), obj -> true);
+
+		regexFilters = builder
+				.comment("Any console messages that match any of these regular expressions will be hidden. Uses Java style regex. Backslashes must be escaped, for example use \\\\s instead of \\s to match whitespace.")
+				.defineList("regexFilters", Collections.emptyList(), obj -> true);
+
 		builder.pop();
 
-		this.spec = builder.build();
+		spec = builder.build();
 	}
 
-	void load() {
-		List<? extends String> filterList = this.filter.get();
-		for (String entry : filterList) {
-			if (entry.startsWith(REGEX_PATTERN)) {
-				this.filterList.add(FilterEntry.regex(entry.substring(REGEX_PATTERN.length())));
-			} else {
-				this.filterList.add(FilterEntry.wildcard(entry));
-			}
+	public void load() {
+		for (String entry : basicFilters.get()) {
+			filterList.add(FilterEntry.wildcard(entry));
+		}
+		
+		for (String entry : regexFilters.get()) {
+			filterList.add(FilterEntry.regex(entry));
 		}
 	}
 
 	public boolean shouldFilter(String message) {
-		for (FilterEntry entry : this.filterList) {
+		for (FilterEntry entry : filterList) {
 			if (entry.shouldFilter(message)) {
 				return true;
 			}
@@ -49,10 +53,10 @@ public class ConsoleFilterConfig {
 	}
 
 	public int filterCount() {
-		return this.filterList.size();
+		return filterList.size();
 	}
 
 	public ForgeConfigSpec getSpec() {
-		return this.spec;
+		return spec;
 	}
 }

@@ -16,7 +16,7 @@ public class Log4jFilter implements CustomFilter, Filter {
 	private final ConsoleFilterConfig config;
 
 	public Log4jFilter(ConsoleFilter mod) {
-		this.config = mod.getConfig();
+		config = mod.getConfig();
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class Log4jFilter implements CustomFilter, Filter {
 	@Override
 	public Filter.Result filter(LogEvent event) {
 		Message message = event.getMessage();
-		if (this.config.shouldFilter(message.toString()) || this.config.shouldFilter(message.getFormattedMessage())) {
+		if (config.shouldFilter(message.toString()) || config.shouldFilter(message.getFormattedMessage())) {
 			return Filter.Result.DENY;
 		}
 		return null;

@@ -28,29 +28,27 @@ public class ConsoleFilter {
 	private final List<CustomFilter> filterRegistry = new ArrayList<>();
 
 	public ConsoleFilter() {
-		this.config.initialize();
+		config.init();
 
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-		ModLoadingContext.get().registerConfig(
-			ModConfig.Type.COMMON, this.config.getSpec(), "consolefilter-common.toml"
-		);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, config.getSpec(), "consolefilter-common.toml");
 	}
 
 	private void commonSetup(final FMLCommonSetupEvent event) {
-		this.config.load();
+		config.load();
 
 		LOGGER.info(config.filterCount() + " message(s) to be filtered.");
 
-		this.filterRegistry.add(new SystemFilter(this));
-		this.filterRegistry.add(new JavaFilter(this));
-		this.filterRegistry.add(new Log4jFilter(this));
+		filterRegistry.add(new SystemFilter(this));
+		filterRegistry.add(new JavaFilter(this));
+		filterRegistry.add(new Log4jFilter(this));
 
-		for (CustomFilter filter : this.filterRegistry) {
+		for (CustomFilter filter : filterRegistry) {
 			filter.applyFilter(this);
 		}
 	}
 
 	public ConsoleFilterConfig getConfig() {
-		return this.config;
+		return config;
 	}
 }

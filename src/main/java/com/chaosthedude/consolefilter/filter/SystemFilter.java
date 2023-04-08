@@ -12,7 +12,7 @@ public class SystemFilter extends PrintStream implements CustomFilter {
 	public SystemFilter(ConsoleFilter mod) {
 		super(System.out, true);
 
-		this.config = mod.getConfig();
+		config = mod.getConfig();
 	}
 
 	@Override
@@ -28,6 +28,6 @@ public class SystemFilter extends PrintStream implements CustomFilter {
 	}
 
 	private boolean shouldFilter(String s) {
-		return this.config.shouldFilter(s);
+		return config.shouldFilter(s);
 	}
 }

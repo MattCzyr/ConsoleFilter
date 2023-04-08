@@ -12,7 +12,7 @@ public class JavaFilter implements CustomFilter, Filter {
 	private final ConsoleFilterConfig config;
 
 	public JavaFilter(ConsoleFilter mod) {
-		this.config = mod.getConfig();
+		config = mod.getConfig();
 	}
 
 	@Override
@@ -22,6 +22,6 @@ public class JavaFilter implements CustomFilter, Filter {
 
 	@Override
 	public boolean isLoggable(LogRecord record) {
-		return !this.config.shouldFilter(record.getMessage());
+		return !config.shouldFilter(record.getMessage());
 	}
 }
