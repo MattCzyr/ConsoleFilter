@@ -1,35 +1,56 @@
 package com.chaosthedude.consolefilter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.chaosthedude.consolefilter.config.ConfigHandler;
-import com.chaosthedude.consolefilter.filter.SystemFilter;
+import org.slf4j.Logger;
+
+import com.chaosthedude.consolefilter.filter.CustomFilter;
 import com.chaosthedude.consolefilter.filter.JavaFilter;
 import com.chaosthedude.consolefilter.filter.Log4jFilter;
+import com.chaosthedude.consolefilter.filter.SystemFilter;
+import com.mojang.logging.LogUtils;
 
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod(modid = ConsoleFilter.MODID, name = ConsoleFilter.NAME, version = ConsoleFilter.VERSION, acceptedMinecraftVersions = "[1.12,1.12.2]", acceptableRemoteVersions = "*")
-
+@Mod(ConsoleFilter.MODID)
 public class ConsoleFilter {
 
 	public static final String MODID = "consolefilter";
-	public static final String NAME = "Console Filter";
-	public static final String VERSION = "1.1.1";
 
-	public static final Logger logger = LogManager.getLogger(MODID);
+	private static final Logger LOGGER = LogUtils.getLogger();
 
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
-		ConfigHandler.loadConfig(event.getSuggestedConfigurationFile());
-		logger.info(ConfigHandler.getMessagesToFilter().size() + " message(s) to be filtered.");
+	private final ConsoleFilterConfig config = new ConsoleFilterConfig();
+	private final List<CustomFilter> filterRegistry = new ArrayList<>();
 
-		JavaFilter.applyFilter();
-		Log4jFilter.applyFilter();
-		SystemFilter.applyFilter();
+	public ConsoleFilter() {
+		this.config.initialize();
+
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
+		ModLoadingContext.get().registerConfig(
+			ModConfig.Type.COMMON, this.config.getSpec(), "consolefilter-common.toml"
+		);
 	}
 
+	private void commonSetup(final FMLCommonSetupEvent event) {
+		this.config.load();
+
+		LOGGER.info(config.filterCount() + " message(s) to be filtered.");
+
+		this.filterRegistry.add(new SystemFilter(this));
+		this.filterRegistry.add(new JavaFilter(this));
+		this.filterRegistry.add(new Log4jFilter(this));
+
+		for (CustomFilter filter : this.filterRegistry) {
+			filter.applyFilter(this);
+		}
+	}
+
+	public ConsoleFilterConfig getConfig() {
+		return this.config;
+	}
 }
