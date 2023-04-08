@@ -1,6 +1,6 @@
 # Console Filter
 
-Console Filter is a Minecraft mod that allows you to hide console messages that contain user-defined phrases.
+Console Filter is a Minecraft mod that allows you to hide console messages that contain configured strings or match regular expressions.
 
 [Downloads and more information on Curse](https://minecraft.curseforge.com/projects/console-filter)
 
