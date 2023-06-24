@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[43,)"
+loaderVersion="[46,)"
 license="CC BY-NC-SA 4.0"
 issueTrackerURL="https://github.com/MattCzyr/ConsoleFilter/issues"
 
 [[mods]]
 modId="consolefilter"
-version="${file.jarVersion}"
+version="1.20-2.0.0"
 displayName="ConsoleFilter"
 authors="NgLoader, MarkKoz, ChaosTheDude"
 description="Hide annoying messages from your console logs."
