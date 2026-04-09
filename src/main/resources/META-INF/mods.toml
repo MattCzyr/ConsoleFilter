@@ -5,8 +5,8 @@ issueTrackerURL="https://github.com/MattCzyr/ConsoleFilter/issues"
 
 [[mods]]
 modId="consolefilter"
-version="1.20.1-2.0.0"
+version="1.20.1-2.1.0-forge"
 displayName="ConsoleFilter"
-authors="NgLoader, MarkKoz, ChaosTheDude"
-description="Hide annoying messages from your console logs."
+authors="ChaosTheDude"
+description="Hide messages from your console logs."
 displayTest="IGNORE_ALL_VERSION"

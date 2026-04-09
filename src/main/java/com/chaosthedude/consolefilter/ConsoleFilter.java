@@ -2,53 +2,78 @@ package com.chaosthedude.consolefilter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
+import com.chaosthedude.consolefilter.filter.SystemErrFilter;
+import org.apache.logging.log4j.LogManager;
 
-import com.chaosthedude.consolefilter.filter.CustomFilter;
 import com.chaosthedude.consolefilter.filter.JavaFilter;
 import com.chaosthedude.consolefilter.filter.Log4jFilter;
-import com.chaosthedude.consolefilter.filter.SystemFilter;
-import com.mojang.logging.LogUtils;
+import com.chaosthedude.consolefilter.filter.SystemOutFilter;
 
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.Logger;
 
 @Mod(ConsoleFilter.MODID)
 public class ConsoleFilter {
 
 	public static final String MODID = "consolefilter";
 
-	private static final Logger LOGGER = LogUtils.getLogger();
+	private static final Logger LOGGER = LogManager.getLogger(MODID);
 
-	private final ConsoleFilterConfig config = new ConsoleFilterConfig();
-	private final List<CustomFilter> filterRegistry = new ArrayList<>();
+    public List<Pattern> filterPatterns = new ArrayList<Pattern>();
 
 	public ConsoleFilter() {
-		config.init();
-
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConsoleFilterConfig.SPEC);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, config.getSpec(), "consolefilter-common.toml");
 	}
 
 	private void commonSetup(final FMLCommonSetupEvent event) {
-		config.load();
+        int numFilters = ConsoleFilterConfig.GENERAL.basicFilters.get().size() + ConsoleFilterConfig.GENERAL.regexFilters.get().size();
+        LOGGER.info("Loaded " + numFilters + " filter(s)");
 
-		LOGGER.info(config.filterCount() + " message(s) to be filtered.");
+        // Pre-compile regexes for performance
+        for (String regex : ConsoleFilterConfig.GENERAL.regexFilters.get()) {
+            filterPatterns.add(Pattern.compile(regex));
+        }
 
-		filterRegistry.add(new SystemFilter(this));
-		filterRegistry.add(new JavaFilter(this));
-		filterRegistry.add(new Log4jFilter(this));
-
-		for (CustomFilter filter : filterRegistry) {
-			filter.applyFilter(this);
-		}
+        new SystemOutFilter(this);
+        new SystemErrFilter(this);
+        new JavaFilter(this);
+        new Log4jFilter(this);
 	}
 
-	public ConsoleFilterConfig getConfig() {
-		return config;
-	}
+	public boolean shouldFilterMessage(String message) {
+        if (message != null) {
+            for (String str : ConsoleFilterConfig.GENERAL.basicFilters.get()) {
+                if (message.contains(str)) {
+                    return true;
+                }
+            }
+
+            for (Pattern pattern : filterPatterns) {
+                Matcher matcher = pattern.matcher(message);
+                if (matcher.matches()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean shouldFilterLogger(String logger) {
+        if (logger != null) {
+            for (String str : ConsoleFilterConfig.GENERAL.loggerFilters.get()) {
+                if (logger.contains(str)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

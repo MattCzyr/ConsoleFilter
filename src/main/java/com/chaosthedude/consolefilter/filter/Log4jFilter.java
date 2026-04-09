@@ -9,33 +9,28 @@ import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
 
 import com.chaosthedude.consolefilter.ConsoleFilter;
-import com.chaosthedude.consolefilter.ConsoleFilterConfig;
 
-public class Log4jFilter implements CustomFilter, Filter {
+public class Log4jFilter implements Filter {
 
-	private final ConsoleFilterConfig config;
+	private ConsoleFilter mod;
 
 	public Log4jFilter(ConsoleFilter mod) {
-		config = mod.getConfig();
+		this.mod = mod;
+        ((Logger) LogManager.getRootLogger()).get().addFilter(this);
 	}
 
-	@Override
-	public void applyFilter(ConsoleFilter mod) {
-		((Logger) LogManager.getRootLogger()).addFilter(this);
-	}
-
+    // All other filter() methods return neutral, so they will pass through to this method, where the filters are applied
 	@Override
 	public Filter.Result filter(LogEvent event) {
-		Message message = event.getMessage();
-		if (config.shouldFilter(message.toString()) || config.shouldFilter(message.getFormattedMessage())) {
+		if (mod.shouldFilterMessage(event.getMessage().getFormattedMessage()) || mod.shouldFilterLogger(event.getLoggerName())) {
 			return Filter.Result.DENY;
 		}
-		return null;
+		return Filter.Result.NEUTRAL;
 	}
 
 	@Override
 	public State getState() {
-		return null;
+		return State.INITIALIZED;
 	}
 
 	@Override
@@ -62,83 +57,84 @@ public class Log4jFilter implements CustomFilter, Filter {
 
 	@Override
 	public Result getOnMismatch() {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result getOnMatch() {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
-	public Result filter(Logger logger, Level level, Marker marker, String msg, Object... params) {
-		return null;
+	public Result filter(Logger logger, Level level, Marker marker, String message, Object... params) {
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0) {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1) {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2) {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
 			Object p3) {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
 			Object p3, Object p4) {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
 			Object p3, Object p4, Object p5) {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
 			Object p3, Object p4, Object p5, Object p6) {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
 			Object p3, Object p4, Object p5, Object p6, Object p7) {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
 			Object p3, Object p4, Object p5, Object p6, Object p7, Object p8) {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2,
 			Object p3, Object p4, Object p5, Object p6, Object p7, Object p8, Object p9) {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result filter(Logger logger, Level level, Marker marker, Object msg, Throwable t) {
-		return null;
+		return Result.NEUTRAL;
 	}
 
 	@Override
 	public Result filter(Logger logger, Level level, Marker marker, Message msg, Throwable t) {
-		return null;
+		return Result.NEUTRAL;
 	}
+
 }

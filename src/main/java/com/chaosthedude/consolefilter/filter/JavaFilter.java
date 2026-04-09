@@ -5,23 +5,18 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.chaosthedude.consolefilter.ConsoleFilter;
-import com.chaosthedude.consolefilter.ConsoleFilterConfig;
 
-public class JavaFilter implements CustomFilter, Filter {
+public class JavaFilter implements Filter {
 
-	private final ConsoleFilterConfig config;
+	private ConsoleFilter mod;
 
 	public JavaFilter(ConsoleFilter mod) {
-		config = mod.getConfig();
-	}
-
-	@Override
-	public void applyFilter(ConsoleFilter mod) {
-		Logger.getLogger("").setFilter(this);
+        this.mod = mod;
+        Logger.getLogger("").setFilter(this);
 	}
 
 	@Override
 	public boolean isLoggable(LogRecord record) {
-		return !config.shouldFilter(record.getMessage());
+		return !mod.shouldFilterMessage(record.getMessage()) && !mod.shouldFilterLogger(record.getLoggerName());
 	}
 }
