@@ -34,7 +34,7 @@ public class ConsoleFilter {
 	}
 
 	private void commonSetup(final FMLCommonSetupEvent event) {
-        int numFilters = ConsoleFilterConfig.GENERAL.basicFilters.get().size() + ConsoleFilterConfig.GENERAL.regexFilters.get().size();
+        int numFilters = ConsoleFilterConfig.GENERAL.basicFilters.get().size() + ConsoleFilterConfig.GENERAL.regexFilters.get().size() + ConsoleFilterConfig.GENERAL.loggerFilters.get().size();
         LOGGER.info("Loaded " + numFilters + " filter(s)");
 
         // Pre-compile regexes for performance
