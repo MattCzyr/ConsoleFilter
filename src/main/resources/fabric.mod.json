@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "consolefilter",
+  "version": "${version}",
+
+  "name": "Console Filter",
+  "description": "Hide messages from your console logs.",
+  "authors": [
+    "ChaosTheDude"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/console-filter",
+    "sources": "https://github.com/MattCzyr/ConsoleFilter"
+  },
+
+  "license": "CC BY-NC-SA 4.0",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.chaosthedude.consolefilter.ConsoleFilter"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "fabric-api": "*",
+    "minecraft": "~1.20.1",
+    "java": ">=17"
+  }
+}

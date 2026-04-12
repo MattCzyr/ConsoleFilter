@@ -16,7 +16,7 @@ public class Log4jFilter implements Filter {
 
 	public Log4jFilter(ConsoleFilter mod) {
 		this.mod = mod;
-        ((Logger) LogManager.getRootLogger()).get().addFilter(this);
+        ((Logger) LogManager.getRootLogger()).addFilter(this);
 	}
 
     // All other filter() methods return neutral, so they will pass through to this method, where the filters are applied

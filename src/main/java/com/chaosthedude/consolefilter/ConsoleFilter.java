@@ -12,15 +12,10 @@ import com.chaosthedude.consolefilter.filter.JavaFilter;
 import com.chaosthedude.consolefilter.filter.Log4jFilter;
 import com.chaosthedude.consolefilter.filter.SystemOutFilter;
 
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.Logger;
 
-@Mod(ConsoleFilter.MODID)
-public class ConsoleFilter {
+public class ConsoleFilter implements ModInitializer {
 
 	public static final String MODID = "consolefilter";
 
@@ -28,18 +23,18 @@ public class ConsoleFilter {
 
     public List<Pattern> filterPatterns = new ArrayList<Pattern>();
 
-	public ConsoleFilter() {
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConsoleFilterConfig.SPEC);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-	}
+	@Override
+	public void onInitialize() {
+		ConsoleFilterConfig.load();
 
-	private void commonSetup(final FMLCommonSetupEvent event) {
-        int numFilters = ConsoleFilterConfig.GENERAL.basicFilters.get().size() + ConsoleFilterConfig.GENERAL.regexFilters.get().size();
+        int numFilters = ConsoleFilterConfig.basicFilters.size() + ConsoleFilterConfig.regexFilters.size() + ConsoleFilterConfig.loggerFilters.size();
         LOGGER.info("Loaded " + numFilters + " filter(s)");
 
         // Pre-compile regexes for performance
-        for (String regex : ConsoleFilterConfig.GENERAL.regexFilters.get()) {
-            filterPatterns.add(Pattern.compile(regex));
+        for (String regex : ConsoleFilterConfig.regexFilters) {
+            if (!regex.isEmpty()) {
+                filterPatterns.add(Pattern.compile(regex));
+            }
         }
 
         new SystemOutFilter(this);
@@ -50,15 +45,15 @@ public class ConsoleFilter {
 
 	public boolean shouldFilterMessage(String message) {
         if (message != null) {
-            for (String str : ConsoleFilterConfig.GENERAL.basicFilters.get()) {
-                if (message.contains(str)) {
+            for (String str : ConsoleFilterConfig.basicFilters) {
+                if (!str.isEmpty() && message.contains(str)) {
                     return true;
                 }
             }
 
             for (Pattern pattern : filterPatterns) {
                 Matcher matcher = pattern.matcher(message);
-                if (matcher.matches()) {
+                if (matcher.find()) {
                     return true;
                 }
             }
@@ -68,8 +63,8 @@ public class ConsoleFilter {
 
     public boolean shouldFilterLogger(String logger) {
         if (logger != null) {
-            for (String str : ConsoleFilterConfig.GENERAL.loggerFilters.get()) {
-                if (logger.contains(str)) {
+            for (String str : ConsoleFilterConfig.loggerFilters) {
+                if (!str.isEmpty() && logger.contains(str)) {
                     return true;
                 }
             }

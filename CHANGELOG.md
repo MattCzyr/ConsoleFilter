@@ -1,3 +1,7 @@
+## Version 3.0.0
+#### Fabric 1.20.1
+- Ported to Fabric 1.20.1
+
 ## Version 2.1.0
 #### Forge 1.20.1
 - Added support for filtering messages by logger name
