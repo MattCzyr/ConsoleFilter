@@ -39,7 +39,9 @@ public class ConsoleFilter {
 
         // Pre-compile regexes for performance
         for (String regex : ConsoleFilterConfig.GENERAL.regexFilters.get()) {
-            filterPatterns.add(Pattern.compile(regex));
+            if (!regex.isEmpty()) {
+                filterPatterns.add(Pattern.compile(regex));
+            }
         }
 
         new SystemOutFilter(this);
@@ -51,14 +53,14 @@ public class ConsoleFilter {
 	public boolean shouldFilterMessage(String message) {
         if (message != null) {
             for (String str : ConsoleFilterConfig.GENERAL.basicFilters.get()) {
-                if (message.contains(str)) {
+                if (!str.isEmpty() && message.contains(str)) {
                     return true;
                 }
             }
 
             for (Pattern pattern : filterPatterns) {
                 Matcher matcher = pattern.matcher(message);
-                if (matcher.matches()) {
+                if (matcher.find()) {
                     return true;
                 }
             }
@@ -69,7 +71,7 @@ public class ConsoleFilter {
     public boolean shouldFilterLogger(String logger) {
         if (logger != null) {
             for (String str : ConsoleFilterConfig.GENERAL.loggerFilters.get()) {
-                if (logger.contains(str)) {
+                if (!str.isEmpty() && logger.contains(str)) {
                     return true;
                 }
             }

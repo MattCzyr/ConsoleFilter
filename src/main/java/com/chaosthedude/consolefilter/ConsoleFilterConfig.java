@@ -24,7 +24,7 @@ public class ConsoleFilterConfig {
                     .defineList("basicFilters", Collections.emptyList(), obj -> true);
 
             regexFilters = builder
-                    .comment("Any console messages matching any of these regular expressions will be hidden. Uses Java regex syntax. Backslashes must be doubled, i.e. use \\\\s instead of \\s to match whitespace.")
+                    .comment("Any console messages containing any of these regular expressions will be hidden. Uses Java regex syntax. Backslashes must be doubled, i.e. use \\\\s instead of \\s to match whitespace.")
                     .defineList("regexFilters", Collections.emptyList(), obj -> true);
 
             loggerFilters = builder
