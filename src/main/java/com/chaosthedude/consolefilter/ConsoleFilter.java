@@ -6,17 +6,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.chaosthedude.consolefilter.filter.SystemErrFilter;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.apache.logging.log4j.LogManager;
 
 import com.chaosthedude.consolefilter.filter.JavaFilter;
 import com.chaosthedude.consolefilter.filter.Log4jFilter;
 import com.chaosthedude.consolefilter.filter.SystemOutFilter;
 
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.Logger;
 
 @Mod(ConsoleFilter.MODID)
@@ -28,9 +27,9 @@ public class ConsoleFilter {
 
     public List<Pattern> filterPatterns = new ArrayList<Pattern>();
 
-	public ConsoleFilter() {
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConsoleFilterConfig.SPEC);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
+	public ConsoleFilter(ModContainer modContainer) {
+        modContainer.registerConfig(ModConfig.Type.COMMON, ConsoleFilterConfig.SPEC);
+        modContainer.getEventBus().addListener(this::commonSetup);
 	}
 
 	private void commonSetup(final FMLCommonSetupEvent event) {
