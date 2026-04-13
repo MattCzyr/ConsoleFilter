@@ -17,7 +17,7 @@ displayTest="IGNORE_ALL_VERSION"
 [[dependencies.consolefilter]]
 modId="neoforge"
 type="required"
-versionRange="${neo_version_range}"
+versionRange="[${neo_version},)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.consolefilter]]
