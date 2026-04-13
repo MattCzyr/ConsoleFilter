@@ -1,6 +1,11 @@
+## Version 4.0.0
+#### NeoForge 1.21.1
+- Updated to NeoForge 1.21.1
+
 ## Version 3.0.0
-#### Fabric 1.20.1
-- Ported to Fabric 1.20.1
+#### Fabric 1.21.1, 1.20.1
+- Updated to Fabric 1.21.1
+- Updated to Fabric 1.20.1
 
 ## Version 2.1.0
 #### Forge 1.20.1
