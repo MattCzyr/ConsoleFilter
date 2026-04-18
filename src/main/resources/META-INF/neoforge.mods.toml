@@ -1,28 +1,27 @@
-modLoader="javafml"
-loaderVersion="${loader_version_range}"
 issueTrackerURL="https://github.com/MattCzyr/ConsoleFilter/issues"
 license="CC BY-NC-SA 4.0"
 
 [[mods]]
-modId="consolefilter"
-version="26.1-4.0.0-neoforge"
-displayName="Console Filter"
-displayURL="https://github.com/MattCzyr/ConsoleFilter"
-authors="ChaosTheDude"
-description='''
+    modId="consolefilter"
+    version="${mod_version}"
+    displayName="Console Filter"
+    displayURL="https://github.com/MattCzyr/ConsoleFilter"
+    authors="ChaosTheDude"
+    description='''
     Hide messages from your console logs.
     '''
-displayTest="IGNORE_ALL_VERSION"
+    displayTest="IGNORE_ALL_VERSION"
 
 [[dependencies.consolefilter]]
-modId="neoforge"
-type="required"
-versionRange="[${neo_version},)"
-ordering="NONE"
-side="BOTH"
+    modId="neoforge"
+    type="required"
+    versionRange="[${neo_version},)"
+    ordering="NONE"
+    side="BOTH"
+
 [[dependencies.consolefilter]]
-modId="minecraft"
-type="required"
-versionRange="[${minecraft_version,)"
-ordering="NONE"
-side="BOTH"
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
